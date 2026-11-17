@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Liquida · Calculadora laboral Colombia 2026</title>
+<style>@font-face{font-family:'Newsreader';font-weight:400;font-style:normal;src:url(fonts/newsreader-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Newsreader';font-weight:500;font-style:normal;src:url(fonts/newsreader-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Newsreader';font-weight:600;font-style:normal;src:url(fonts/newsreader-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Public Sans';font-weight:400;font-style:normal;src:url(fonts/public-sans-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Public Sans';font-weight:500;font-style:normal;src:url(fonts/public-sans-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Public Sans';font-weight:600;font-style:normal;src:url(fonts/public-sans-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Public Sans';font-weight:700;font-style:normal;src:url(fonts/public-sans-latin-700-normal.woff2) format('woff2')}</style>
+<script src="jspdf.umd.min.js"></script>
+<style>
+:root{--paper:#EEF2EF;--sheet:#FFFFFF;--ink:#12302B;--ink2:#1B423B;--text:#17201E;--muted:#5E6E69;--line:#D5DED9;--brass:#B88A2E;--brass-soft:#F4ECDC;--warn:#8A5A12;--warn-soft:#F7EEDC;--danger:#A23B2A;--serif:'Newsreader',Georgia,serif;--sans:'Public Sans',system-ui,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.45}
+body{padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left)}
+button,input,select{font:inherit;color:inherit}
+.app{max-width:540px;margin:0 auto;padding:14px 18px calc(110px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;gap:12px;margin:6px 0 18px}
+.seal{width:44px;height:44px;flex:none;border-radius:50%;background:var(--ink);display:grid;place-items:center;box-shadow:inset 0 0 0 3px var(--ink),inset 0 0 0 4px #4F7C70}
+.seal span{font-family:var(--serif);color:#F3E7C9;font-size:23px;font-weight:500;margin-top:-2px}
+header h1{font-family:var(--serif);font-size:27px;margin:0;font-weight:500;letter-spacing:-.3px;line-height:1}
+header p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.hbtn{margin-left:auto;white-space:nowrap;flex:none;border:1px solid var(--line);background:var(--sheet);border-radius:20px;padding:7px 12px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;justify-content:center;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+.tabs .wrap{display:flex;width:100%;max-width:540px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:none;padding:6px 2px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:12px}
+.tab svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{color:var(--ink)}
+.tab.on svg{stroke-width:2.1}
+.tab[data-v=valores]{display:none}
+.view{display:none}.view.on{display:block}
+.vtitle{font-family:var(--serif);font-size:24px;font-weight:500;margin:0 0 4px;letter-spacing:-.2px}
+.vsub{color:var(--muted);margin:0 0 16px;font-size:14px}
+.card{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.card h2{font-family:var(--serif);font-size:19px;margin:0 0 12px;font-weight:500}
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.field input,.field select{display:block;width:100%;min-width:0;padding:12px 13px;border:1px solid var(--line);border-radius:10px;background:#FBFCFB;font-size:16px;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .15s,box-shadow .15s}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235E6E69' fill='none' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.field input[type=date]{min-height:48px;line-height:1.2}
+.field input:focus,.field select:focus{border-color:var(--brass);box-shadow:0 0 0 3px rgba(184,138,46,.18);background:#fff}
+.field small{display:block;color:var(--muted);font-size:12.5px;margin-top:5px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.seg{display:flex;border:1px solid var(--line);border-radius:11px;padding:3px;gap:3px;background:#F5F8F6}
+.seg button{flex:1;border:0;background:none;padding:9px 4px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer}
+.seg button.on{background:var(--ink);color:#fff}
+.check{display:flex;align-items:center;gap:10px;font-size:14px;margin-top:4px;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--ink);flex:none}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+/* comprobante */
+.result{position:relative;background:var(--ink);color:#F1F4F2;border-radius:16px 16px 6px 6px;padding:22px 20px 20px;margin:4px 0 14px;overflow:hidden;isolation:isolate}
+.result::before{content:"";position:absolute;inset:0;background-image:var(--guilloche);background-size:340px 340px;background-position:right -90px top -110px;background-repeat:no-repeat;opacity:.55;z-index:-1}
+.result::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:10px;background:radial-gradient(circle at 7px 10px,var(--paper) 5px,transparent 5.5px) repeat-x;background-size:14px 10px}
+.result .lbl{font-size:13px;color:#A9C2BA}
+.result .total{font-family:var(--serif);font-size:44px;font-weight:500;letter-spacing:-.5px;margin:2px 0 16px;font-variant-numeric:lining-nums tabular-nums;color:#F6EBCF;line-height:1.05}
+.lines{border-top:1px dashed rgba(241,244,242,.28);padding-top:10px}
+.line{display:flex;align-items:baseline;gap:8px;padding:6px 0;font-size:14px}
+.line>span:first-child{color:#DCE6E2;flex:none;max-width:62%}
+.line i.dots{flex:1;border-bottom:1px dotted rgba(241,244,242,.32);transform:translateY(-4px);min-width:12px}
+.line small{display:block;color:#8FAAA2;font-size:12px;margin-top:1px}
+.line b{font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.btns{display:flex;gap:8px;margin-top:16px}
+.btns button{flex:1;padding:13px;border-radius:11px;border:1px solid rgba(241,244,242,.25);background:transparent;color:#F1F4F2;font-weight:600;cursor:pointer}
+.btns button.main{background:var(--brass);border-color:var(--brass);color:#1E1708}
+.btn-acc{width:100%;padding:14px;border-radius:11px;border:0;background:var(--ink);color:#fff;font-weight:600;cursor:pointer}
+.note{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:11px 13px;font-size:13.5px;margin-bottom:12px}
+.info{background:#E2EBE7;color:var(--ink2);border-radius:10px;padding:11px 13px;font-size:13.5px;margin-bottom:12px}
+.kv{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14.5px;gap:10px}
+.kv:last-child{border-bottom:0}
+.kv span{color:var(--muted)}
+.kv b{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.hrow{display:grid;grid-template-columns:1fr 76px;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.hrow:last-child{border-bottom:0}
+.hrow div{font-size:14.5px}
+.hrow div small{display:block;color:var(--muted);font-size:12px}
+.hrow input{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;text-align:center;font-size:16px;background:#FBFCFB}
+details.more{margin-top:6px;border-top:1px solid var(--line);padding-top:10px}
+details.more summary{cursor:pointer;color:var(--ink);font-weight:600;font-size:14px;list-style:none;padding:4px 0;display:flex;justify-content:space-between}
+details.more summary::after{content:"+";font-size:18px;color:var(--brass)}
+details.more[open] summary::after{content:"–"}
+details.more summary::-webkit-details-marker{display:none}
+details.more[open] summary{margin-bottom:10px}
+.emp{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:10px;background:#FBFCFB}
+.emp h3{margin:0;font-family:var(--serif);font-size:18px;font-weight:500}
+.emp p{margin:3px 0 11px;color:var(--muted);font-size:13.5px}
+.emp p b{color:var(--text)}
+.emp .acts{display:flex;gap:6px}
+.emp .acts button{flex:1;padding:10px 6px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink)}
+.emp .acts button.del{color:var(--danger);flex:0 0 auto;padding:10px 13px}
+.empty{text-align:center;color:var(--muted);font-size:14.5px;padding:14px 8px 18px}
+.foot{color:var(--muted);font-size:12px;text-align:center;margin-top:20px}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:20px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+.hidden{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="seal"><span>L</span></div>
+    <div><h1>Liquida</h1><p>Tus cuentas laborales, claras</p></div>
+    <button class="hbtn" id="btnValores">Valores 2026</button>
+  </header>
+  <nav class="tabs"><div class="wrap">
+    <button class="tab on" data-v="liq"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Liquidar</button>
+    <button class="tab" data-v="dom"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>Doméstica</button>
+    <button class="tab" data-v="emp"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.3 3-5 6-5s5.4 1.7 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c2.6.2 4.3 1.8 5 4.8"/></svg>Mi equipo</button>
+    <button class="tab" data-v="prima"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="12" rx="2"/><circle cx="12" cy="13" r="2.6"/><path d="M6 4h12"/></svg>Prima</button>
+    <button class="tab" data-v="horas"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>Horas extra</button>
+    <button class="tab" data-v="valores"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>Valores</button>
+  </div></nav>
+
+  <section class="view on" id="v-liq"></section>
+  <section class="view" id="v-dom"></section>
+
+  <section class="view" id="v-emp">
+    <h2 class="vtitle">Mi equipo</h2><p class="vsub">Nómina del mes, aportes y próximas primas de quienes trabajan contigo.</p>
+    <div id="empSummary"></div>
+    <div class="card">
+      <h2>Personas</h2>
+      <div id="empList"></div>
+      <details class="more" id="empAddBox">
+        <summary>+ Agregar empleado</summary>
+        <div class="field"><label>Nombre</label><input id="eNombre" placeholder="Ej: María Gómez"></div>
+        <div class="field"><label>Tipo</label>
+          <select id="eTipo"><option value="gen">Empleado (empresa o negocio)</option><option value="domtc">Empleada doméstica tiempo completo</option><option value="domdias">Empleada doméstica por días</option></select></div>
+        <div class="field" id="eSalBox"><label>Salario mensual</label><input inputmode="numeric" class="money" id="eSalario"></div>
+        <div class="row hidden" id="eDiasBox">
+          <div class="field"><label>Días al mes</label><input inputmode="numeric" id="eDias" placeholder="8"></div>
+          <div class="field"><label>Pago por día</label><input inputmode="numeric" class="money" id="eValorDia"></div>
+        </div>
+        <div class="field"><label>Fecha de ingreso</label><input type="date" id="eIngreso"></div>
+        <label class="check" id="eInternaBox"><input type="checkbox" id="eInterna"> Vive en la casa (interna, sin auxilio de transporte)</label>
+        <div style="margin-top:12px"><button class="btn-acc" id="eGuardar">Guardar empleado</button></div>
+      </details>
+    </div>
+    <div class="card">
+      <h2>Aportes del empleador</h2>
+      <label class="check"><input type="checkbox" id="eExonera"> Estoy exonerado del aporte de salud (8,5%)</label>
+      <div class="field" style="margin-top:6px"><small>Aplica a empresas y a personas naturales con 2 o más empleados que ganen menos de 10 mínimos. Si tienes una sola empleada doméstica, normalmente debes pagarlo.</small></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-prima">
+    <h2 class="vtitle">Prima de servicios</h2><p class="vsub">Medio mes de salario por cada semestre trabajado.</p>
+    <div class="card">
+      <h2>Tus datos</h2>
+      <div class="field"><label>Semestre</label>
+        <div class="seg" id="pSem"><button data-v="1">Ene – Jun</button><button data-v="2">Jul – Dic</button></div>
+      </div>
+      <div class="field"><label>Salario mensual</label><input inputmode="numeric" class="money" id="pSalario"></div>
+      <div class="field"><label>Pagos variables (promedio mensual)</label><input inputmode="numeric" class="money" id="pVar" placeholder="0"></div>
+      <label class="check"><input type="checkbox" id="pAux" checked> Recibe auxilio de transporte</label>
+      <div class="field" style="margin-top:12px"><label>¿Trabajaste todo el semestre?</label>
+        <div class="seg" id="pTodo"><button data-v="si" class="on">Sí</button><button data-v="no">No, entré después</button></div>
+      </div>
+      <div class="field hidden" id="pIngresoBox"><label>Fecha de ingreso</label><input type="date" id="pIngreso"></div>
+    </div>
+    <div class="result" id="pResult"></div>
+  </section>
+
+  <section class="view" id="v-horas">
+    <h2 class="vtitle">Horas extra y recargos</h2><p class="vsub">Con la jornada y los recargos vigentes en la fecha que elijas.</p>
+    <div class="card">
+      <h2>Tus horas</h2>
+      <div class="field"><label>Salario mensual</label><input inputmode="numeric" class="money" id="hSalario"></div>
+      <div class="field"><label>Fecha del trabajo</label><input type="date" id="hFecha"></div>
+      <div class="info" id="hInfo"></div>
+      <div id="hRows"></div>
+    </div>
+    <div class="result" id="hResult"></div>
+  </section>
+
+  <section class="view" id="v-valores">
+    <h2 class="vtitle">Valores 2026</h2><p class="vsub">Las cifras con las que calcula la app.</p>
+    <div class="card">
+      <h2>Salario y jornada</h2>
+      <div class="kv"><span>Salario mínimo</span><b>$1.750.905</b></div>
+      <div class="kv"><span>Auxilio de transporte</span><b>$249.095</b></div>
+      <div class="kv"><span>Mínimo + auxilio</span><b>$2.000.000</b></div>
+      <div class="kv"><span>Día de salario mínimo</span><b>$58.364</b></div>
+      <div class="kv"><span>Auxilio de transporte por día</span><b>$8.303</b></div>
+      <div class="kv"><span>Tope para recibir auxilio</span><b>Hasta 2 mínimos</b></div>
+      <div class="kv"><span>Jornada máxima</span><b>44 h · 42 h desde 15 jul 2026</b></div>
+      <div class="kv"><span>Jornada nocturna</span><b>7:00 p. m. a 6:00 a. m.</b></div>
+      <div class="kv"><span>Recargo nocturno</span><b>35%</b></div>
+      <div class="kv"><span>Hora extra diurna / nocturna</span><b>25% / 75%</b></div>
+      <div class="kv"><span>Dominical y festivo</span><b>80% · 90% desde 1 jul 2026</b></div>
+    </div>
+    <div class="card">
+      <h2>Fechas de pago</h2>
+      <div class="kv"><span>Intereses de cesantías</span><b>31 de enero</b></div>
+      <div class="kv"><span>Consignación de cesantías</span><b>14 de febrero</b></div>
+      <div class="kv"><span>Prima primer semestre</span><b>30 de junio</b></div>
+      <div class="kv"><span>Prima segundo semestre</span><b>20 de diciembre</b></div>
+    </div>
+  </section>
+
+  <div class="foot">Liquida 0.1 · Cálculo orientativo con la ley vigente en 2026 (Código Sustantivo del Trabajo, Leyes 2101 de 2021 y 2466 de 2025).<br>No reemplaza la asesoría de un abogado o contador.</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ================= Constantes y utilidades =================
+const SMMLV=1750905, AUX=249095, DIA_MIN=Math.round(SMMLV/30);
+const $=s=>document.querySelector(s);
+const cop=n=>new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(Math.round(n||0));
+const num=el=>Number(String(el.value).replace(/[^\d]/g,''))||0;
+const parse=s=>{if(!s)return null;const[y,m,d]=s.split('-').map(Number);return {y,m,d}};
+const pad=n=>String(n).padStart(2,'0');
+const todayIso=(()=>{const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`})();
+const fmtDate=s=>{const p=parse(s);if(!p)return '';return new Date(p.y,p.m-1,p.d).toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'})};
+const dec=(n,d=1)=>n.toFixed(d).replace('.',',');
+function isLastDayOfFeb(p){return p.m===2&&new Date(p.y,2,0).getDate()===p.d}
+function days360(a,b){const A=parse(a),B=parse(b);if(!A||!B)return 0;let d1=Math.min(A.d,30),d2=Math.min(B.d,30);if(isLastDayOfFeb(B))d2=30;return Math.max(0,(B.y-A.y)*360+(B.m-A.m)*30+(d2-d1)+1)}
+const maxDate=(a,b)=>a>b?a:b;
+function addDay(s,n){const p=parse(s);const d=new Date(p.y,p.m-1,p.d+n);return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),2600)}
+function moneyInputs(){document.querySelectorAll('.money').forEach(el=>{if(el.dataset.m)return;el.dataset.m=1;el.addEventListener('input',()=>{const v=num(el);el.value=v?v.toLocaleString('es-CO'):''})})}
+function seg(box,cb){box.querySelectorAll('button').forEach(b=>b.onclick=()=>{box.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));cb&&cb(b.dataset.v)})}
+const segVal=box=>box.querySelector('button.on').dataset.v;
+function setSeg(box,v){box.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===v))}
+const lines=rows=>rows.map(r=>`<div class="line"><span>${r[0]}${r[2]?`<small>${r[2]}</small>`:''}</span><i class="dots"></i><b>${cop(r[1])}</b></div>`).join('');
+const store={get(k,d){try{const v=localStorage.getItem('liquida:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('liquida:'+k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// ================= Cálculo de liquidación =================
+function liquidar(p){
+  const notes=[];
+  const total=days360(p.ini,p.fin), finP=parse(p.fin);
+  const base=p.salario+p.aux;
+  const dCes=days360(maxDate(p.ini,`${finP.y}-01-01`),p.fin);
+  const dPri=days360(maxDate(p.ini,finP.m<=6?`${finP.y}-01-01`:`${finP.y}-07-01`),p.fin);
+  const ces=base*dCes/360, ints=ces*dCes*0.12/360, prima=base*dPri/360;
+  const diasVac=Math.max(0,total*15/360-(p.vacTom||0)), vac=p.salario/30*diasVac;
+  const rows=[];
+  if(p.pend>0)rows.push(['Salario pendiente',(p.salario+p.aux)/30*p.pend,`${p.pend} días`]);
+  rows.push(['Cesantías',ces,`${dCes} días de ${finP.y}`]);
+  rows.push(['Intereses sobre cesantías',ints,'12% anual']);
+  rows.push(['Prima de servicios',prima,`${dPri} días del semestre`]);
+  rows.push(['Vacaciones no disfrutadas',vac,`${dec(diasVac)} días`]);
+  if(p.motivo==='sinjusta'){
+    const diario=p.salario/30;
+    if(p.tipo==='indef'){const anios=total/360,alto=p.salario>=10*SMMLV;const dias=(alto?20:30)+Math.max(0,anios-1)*(alto?15:20);rows.push(['Indemnización por despido',diario*dias,`${dec(dias)} días de salario`])}
+    else if(!p.pactado||p.pactado<=p.fin)notes.push(`<div class="note">Escribe la fecha ${p.tipo==='fijo'?'pactada de terminación':'estimada de fin de la obra'} para calcular la indemnización.</div>`);
+    else{const dias=Math.max(15,days360(addDay(p.fin,1),p.pactado));rows.push(['Indemnización por despido',diario*dias,`${dias} días que faltaban del contrato`])}
+  }
+  if(p.motivo==='fin'&&p.tipo==='indef')notes.push('<div class="note">Un contrato indefinido no tiene plazo. Si el empleador lo terminó sin una causa legal, elige "Despido sin justa causa".</div>');
+  if(p.motivo==='mutuo')notes.push('<div class="info">En mutuo acuerdo la indemnización depende de lo pactado por escrito. Aquí no se incluye.</div>');
+  if(p.salario>=13*SMMLV)notes.push('<div class="note">Con salario integral (13 mínimos o más), la prima y las cesantías ya están incluidas en el salario.</div>');
+  if(finP.y<2026)notes.push('<div class="note">La fecha de salida es anterior a 2026: se usan los valores de 2026 y el resultado puede no coincidir.</div>');
+  if(dCes<total)notes.push(`<div class="info">Las cesantías de años anteriores a ${finP.y} ya debieron consignarse al fondo. Aquí van solo las de ${finP.y}.</div>`);
+  return {rows,total:rows.reduce((a,r)=>a+r[1],0),days:total,notes};
+}
+
+// ================= Formulario de liquidación =================
+function liqForm(px,domestic){
+  return `${domestic?'<h2 class="vtitle">Empleada doméstica</h2><p class="vsub">Liquidación de tiempo completo o por días, con el auxilio proporcional.</p>':'<h2 class="vtitle">Liquidación</h2><p class="vsub">Lo que te deben pagar al terminar un contrato de trabajo.</p>'}
+  ${domestic?`<div class="card"><h2>Modalidad</h2>
+    <div class="field"><div class="seg" id="${px}Mod"><button data-v="tc" class="on">Tiempo completo</button><button data-v="dias">Por días</button></div></div>
+    <div id="${px}TcBox">
+      <div class="field"><label>Salario mensual</label><input inputmode="numeric" class="money" id="${px}Salario"></div>
+      <label class="check"><input type="checkbox" id="${px}Interna"> Vive en la casa (interna): no recibe auxilio de transporte</label>
+    </div>
+    <div id="${px}DiasBox" class="hidden">
+      <div class="row">
+        <div class="field"><label>Días al mes</label><input inputmode="numeric" id="${px}Dias" value="8"></div>
+        <div class="field"><label>Pago por día</label><input inputmode="numeric" class="money" id="${px}ValorDia"></div>
+      </div>
+      <div class="field"><small>Pago del día sin auxilio (mínimo $58.364 en 2026). Se suma el descanso dominical proporcional y el auxilio de transporte por día ($8.303).</small></div>
+    </div>
+  </div>`:''}
+  <div class="card">
+    <h2>${domestic?'El contrato':'Tus datos'}</h2>
+    <div class="field"><label>Fecha de ingreso</label><input type="date" id="${px}Inicio"></div>
+    <div class="field"><label>Fecha de salida</label><input type="date" id="${px}Fin"></div>
+    ${domestic?'':`<div class="field"><label>Salario mensual</label><input inputmode="numeric" class="money" id="${px}Salario"><small id="${px}SalHint"></small></div>
+    <div class="field"><label>Pagos variables (promedio mensual)</label><input inputmode="numeric" class="money" id="${px}Var" placeholder="0"><small>Horas extra, recargos o comisiones de cada mes. Déjalo en 0 si no aplica.</small></div>
+    <label class="check"><input type="checkbox" id="${px}Aux" checked> Recibe auxilio de transporte</label>`}
+  </div>
+  <div class="card">
+    ${domestic?'':'<h2>El contrato</h2>'}
+    <div class="field"><label>Tipo de contrato</label>
+      <div class="seg" id="${px}Tipo"><button data-v="indef" class="on">Indefinido</button><button data-v="fijo">Término fijo</button><button data-v="obra">Obra o labor</button></div>
+    </div>
+    <div class="field hidden" id="${px}PactadoBox"><label id="${px}PactadoLbl">Fecha de terminación pactada</label><input type="date" id="${px}Pactado"></div>
+    <div class="field"><label>¿Cómo terminó?</label>
+      <select id="${px}Motivo"><option value="renuncia">Renuncia</option><option value="sinjusta">Despido sin justa causa</option><option value="justa">Despido con justa causa</option><option value="fin">Se cumplió el plazo del contrato</option><option value="mutuo">Mutuo acuerdo</option></select>
+    </div>
+    <div class="row">
+      <div class="field"><label>Vacaciones tomadas</label><input inputmode="numeric" id="${px}VacTom" placeholder="0"><small>Días hábiles</small></div>
+      <div class="field"><label>Días sin pagar</label><input inputmode="numeric" id="${px}Pend" placeholder="0"><small>Salario pendiente</small></div>
+    </div>
+    <details class="more"><summary>Datos para el PDF (opcional)</summary>
+      <div class="field"><label>Nombre ${domestic?'de la trabajadora':'del trabajador'}</label><input id="${px}NomT"></div>
+      <div class="field"><label>Cédula</label><input inputmode="numeric" id="${px}CedT"></div>
+      <div class="field"><label>Nombre del empleador</label><input id="${px}NomE"></div>
+    </details>
+  </div>
+  <div id="${px}Notes"></div>
+  <div class="result" id="${px}Result"></div>`;
+}
+$('#v-liq').innerHTML=liqForm('l',false);
+$('#v-dom').innerHTML=liqForm('d',true);
+moneyInputs();
+
+function setupLiq(px,domestic){
+  const g=id=>$('#'+px+id);
+  let last=null, warn='';
+  g('Inicio').value='2024-03-01';g('Fin').value=todayIso;g('Salario').value=SMMLV.toLocaleString('es-CO');
+  const porDias=()=>domestic&&segVal(g('Mod'))==='dias';
+  if(domestic){g('ValorDia').value=DIA_MIN.toLocaleString('es-CO');seg(g('Mod'),v=>{g('TcBox').classList.toggle('hidden',v!=='tc');g('DiasBox').classList.toggle('hidden',v==='tc');calc()})}
+  seg(g('Tipo'),v=>{g('PactadoBox').classList.toggle('hidden',v==='indef');g('PactadoLbl').textContent=v==='fijo'?'Fecha de terminación pactada':'Fecha estimada de fin de la obra';calc()});
+  function params(){
+    let salario,aux,desc;
+    if(porDias()){
+      const dias=Math.min(30,num(g('Dias'))),vd=num(g('ValorDia'));
+      salario=vd*dias*7/6;aux=AUX/30*dias;desc=`${dias} días al mes · ${cop(vd)} por día`;
+      if(vd&&vd<DIA_MIN)warn='<div class="note">El pago por día es menor al mínimo de 2026 ($58.364).</div>';
+    }else{
+      const s=num(g('Salario')),v=domestic?0:num(g('Var'));
+      salario=s+v;
+      const auxOk=domestic?!g('Interna').checked:g('Aux').checked;
+      aux=auxOk&&s<=2*SMMLV?AUX:0;desc=`Salario ${cop(s)}${v?` + variables ${cop(v)}`:''}`;
+      if(!domestic)g('SalHint').textContent=s>2*SMMLV?'Gana más de 2 mínimos: no recibe auxilio de transporte.':(s&&s<SMMLV?'Ojo: es menos que el salario mínimo 2026.':'');
+      if(domestic&&s&&s<SMMLV)warn='<div class="note">Para tiempo completo el salario no puede ser menor al mínimo de 2026 ($1.750.905).</div>';
+    }
+    return {ini:g('Inicio').value,fin:g('Fin').value,salario,aux,desc,tipo:segVal(g('Tipo')),motivo:g('Motivo').value,pactado:g('Pactado').value,vacTom:num(g('VacTom')),pend:num(g('Pend'))};
+  }
+  function calc(){
+    warn='';
+    const p=params();
+    if(!p.ini||!p.fin||p.fin<p.ini||!p.salario){g('Result').innerHTML='<div class="lbl">Completa las fechas y el salario</div>';g('Notes').innerHTML='';last=null;return}
+    const r=liquidar(p);last={p,r};
+    if(porDias())r.notes.unshift(`<div class="info">Salario mensual equivalente: ${cop(p.salario)} (con descanso dominical proporcional) + auxilio de transporte proporcional ${cop(p.aux)}.</div>`);
+    g('Notes').innerHTML=warn+r.notes.join('');
+    g('Result').innerHTML=`<div class="lbl">${domestic?'Hay que pagarle aproximadamente':'Te deben pagar aproximadamente'}</div><div class="total">${cop(r.total)}</div>
+      <div class="lines">${lines(r.rows)}</div>
+      <div class="line" style="opacity:.6;font-size:12.5px"><span>Tiempo trabajado</span><span>${r.days} días · ${dec(r.days/360)} años</span></div>
+      <div class="btns"><button class="main" data-a="pdf">Descargar PDF</button><button data-a="copy">Copiar</button></div>`;
+    g('Result').querySelector('[data-a=pdf]').onclick=()=>pdfLiquidacion(last,{nomT:g('NomT').value,cedT:g('CedT').value,nomE:g('NomE').value,domestic});
+    g('Result').querySelector('[data-a=copy]').onclick=()=>{const t=`Liquidación laboral (Liquida)\n${fmtDate(p.ini)} – ${fmtDate(p.fin)}\n${p.desc}\n`+r.rows.map(x=>`${x[0]}: ${cop(x[1])}`).join('\n')+`\nTOTAL: ${cop(r.total)}\n*Cálculo orientativo, ley 2026.`;copyText(t)};
+  }
+  $('#v-'+(domestic?'dom':'liq')).querySelectorAll('input,select').forEach(el=>{el.addEventListener('input',calc);el.addEventListener('change',calc)});
+  calc();
+  return {fill(o){
+    g('Inicio').value=o.ingreso;g('Fin').value=todayIso;
+    if(domestic){const d=o.tipo==='domdias';setSeg(g('Mod'),d?'dias':'tc');g('TcBox').classList.toggle('hidden',d);g('DiasBox').classList.toggle('hidden',!d);
+      if(d){g('Dias').value=o.dias;g('ValorDia').value=o.valorDia.toLocaleString('es-CO')}else{g('Salario').value=o.salario.toLocaleString('es-CO');g('Interna').checked=!!o.interna}}
+    else{g('Salario').value=o.salario.toLocaleString('es-CO');g('Var').value='';g('Aux').checked=true}
+    g('NomT').value=o.nombre;calc()}};
+}
+const liqGen=setupLiq('l',false), liqDom=setupLiq('d',true);
+
+// ================= Copiar =================
+function copyText(t){if(window.Android&&Android.copy){Android.copy(t);toast('Resumen copiado');return}
+  navigator.clipboard.writeText(t).then(()=>toast('Resumen copiado'),()=>toast('No se pudo copiar'))}
+window.toast=toast;
+// botón atrás de Android: vuelve a Liquidar antes de salir
+window.__back=()=>{const on=document.querySelector('.tab.on');if(on&&on.dataset.v!=='liq'){showTab('liq');return true}return false};
+// ================= PDF =================
+let downloads=null;
+(async()=>{try{if(window.claude&&window.claude.use)downloads=await window.claude.use('downloads')}catch(e){downloads=null}})();
+async function savePdf(doc,filename){
+  if(window.Android&&Android.savePdf){const b64=doc.output('datauristring').split(',')[1];Android.savePdf(b64,filename);return}
+  const buf=doc.output('arraybuffer');
+  if(!downloads){toast('La descarga de PDF no está disponible aquí. Usa "Copiar" por ahora.');return}
+  try{await downloads.save({filename,data:buf});toast('PDF listo')}
+  catch(e){if(e&&e.code==='declined')return;toast('No se pudo descargar el PDF')}
+}
+function pdfBase(title){
+  const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'letter'});
+  doc.setFillColor(14,124,90);doc.rect(0,0,216,24,'F');
+  doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text(title,16,15);
+  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text('Generado con Liquida · '+fmtDate(todayIso),200,15,{align:'right'});
+  doc.setTextColor(15,23,42);return doc;
+}
+function pdfInfo(doc,y,pairs){doc.setFontSize(10.5);pairs.forEach(([k,v])=>{doc.setFont('helvetica','bold');doc.text(k+':',16,y);doc.setFont('helvetica','normal');doc.text(String(v),56,y,{maxWidth:144});y+=7});return y}
+function pdfTable(doc,y,rows,totalLabel,total){
+  doc.setDrawColor(229,233,239);doc.setFontSize(10.5);
+  doc.setFont('helvetica','bold');doc.text('Concepto',16,y);doc.text('Valor',200,y,{align:'right'});y+=3;doc.line(16,y,200,y);y+=7;
+  doc.setFont('helvetica','normal');
+  rows.forEach(r=>{doc.text(r[0],16,y);if(r[2]){doc.setTextColor(100,116,139);doc.setFontSize(8.5);doc.text(r[2],16,y+4);doc.setFontSize(10.5);doc.setTextColor(15,23,42)}doc.text(cop(r[1]),200,y,{align:'right'});y+=r[2]?10:8;doc.line(16,y-4,200,y-4)});
+  y+=2;doc.setFont('helvetica','bold');doc.setFontSize(12);doc.text(totalLabel,16,y);doc.text(cop(total),200,y,{align:'right'});
+  return y+8;
+}
+function pdfSign(doc,y,a,b){
+  y=Math.max(y+24,215);doc.setDrawColor(15,23,42);doc.line(16,y,96,y);doc.line(120,y,200,y);
+  doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(15,23,42);doc.text(a,16,y+5);doc.text(b,120,y+5);
+  doc.setFontSize(8);doc.setTextColor(100,116,139);
+  doc.text('Cálculo orientativo con la ley vigente en 2026 (CST, Leyes 2101 de 2021 y 2466 de 2025). No reemplaza asesoría legal o contable.',16,262,{maxWidth:184});
+}
+function pdfLiquidacion(last,meta){
+  if(!last){toast('Completa los datos primero');return}
+  if(!window.jspdf){toast('Cargando el generador de PDF, intenta en un momento');return}
+  const {p,r}=last;const doc=pdfBase('Liquidación de contrato de trabajo');
+  let y=pdfInfo(doc,36,[
+    [meta.domestic?'Trabajadora':'Trabajador',(meta.nomT||'—')+(meta.cedT?`  ·  C.C. ${meta.cedT}`:'')],
+    ['Empleador',meta.nomE||'—'],
+    ['Periodo',`${fmtDate(p.ini)} a ${fmtDate(p.fin)} (${r.days} días)`],
+    ['Salario base',p.desc],
+    ['Contrato',{indef:'Término indefinido',fijo:'Término fijo',obra:'Obra o labor'}[p.tipo]],
+    ['Terminación',{renuncia:'Renuncia',sinjusta:'Despido sin justa causa',justa:'Despido con justa causa',fin:'Vencimiento del plazo',mutuo:'Mutuo acuerdo'}[p.motivo]]
+  ]);
+  y=pdfTable(doc,y+4,r.rows,'TOTAL A PAGAR',r.total);
+  pdfSign(doc,y,'Firma del empleador',meta.domestic?'Firma de la trabajadora':'Firma del trabajador');
+  savePdf(doc,`Liquidacion_${(meta.nomT||'trabajador').trim().replace(/\s+/g,'_')}.pdf`);
+}
+
+// ================= Mis empleados =================
+let empleados=store.get('empleados',[]);
+$('#eExonera').checked=store.get('exonera',false);
+$('#eSalario').value=SMMLV.toLocaleString('es-CO');$('#eValorDia').value=DIA_MIN.toLocaleString('es-CO');$('#eIngreso').value=`${new Date().getFullYear()}-01-01`;
+function eTipoUI(){const t=$('#eTipo').value;$('#eSalBox').classList.toggle('hidden',t==='domdias');$('#eDiasBox').classList.toggle('hidden',t!=='domdias');$('#eInternaBox').classList.toggle('hidden',t!=='domtc')}
+$('#eTipo').onchange=eTipoUI;eTipoUI();
+$('#eExonera').onchange=()=>{store.set('exonera',$('#eExonera').checked);renderEmp()};
+$('#eGuardar').onclick=()=>{
+  const nombre=$('#eNombre').value.trim(),tipo=$('#eTipo').value,ingreso=$('#eIngreso').value;
+  if(!nombre||!ingreso){toast('Escribe el nombre y la fecha de ingreso');return}
+  const e={id:Date.now(),nombre,tipo,ingreso,salario:num($('#eSalario')),dias:Math.min(30,num($('#eDias'))||8),valorDia:num($('#eValorDia'))||DIA_MIN,interna:$('#eInterna').checked};
+  if(tipo!=='domdias'&&!e.salario){toast('Escribe el salario');return}
+  empleados.push(e);store.set('empleados',empleados);$('#eNombre').value='';$('#empAddBox').open=false;renderEmp();toast('Empleado guardado');
+};
+function nomina(e){
+  let sal,aux,ibc;
+  if(e.tipo==='domdias'){sal=e.valorDia*e.dias*7/6;aux=AUX/30*e.dias;ibc=sal}
+  else{sal=e.salario;aux=((e.tipo==='domtc'&&e.interna)||sal>2*SMMLV)?0:AUX;ibc=Math.max(sal,SMMLV)}
+  const exon=$('#eExonera').checked&&sal<10*SMMLV;
+  const dedSalud=ibc*0.04,dedPension=ibc*0.04;
+  const apSalud=exon?0:ibc*0.085,apPension=ibc*0.12,apArl=ibc*0.00522,apCaja=ibc*0.04;
+  const prov=(sal+aux)/12*2+(sal+aux)*0.01+sal*15/360;
+  const y=new Date().getFullYear(),m=new Date().getMonth()+1;
+  const semIni=m<=6?`${y}-01-01`:`${y}-07-01`,semFin=m<=6?`${y}-06-30`:`${y}-12-31`;
+  const prima=(sal+aux)*days360(maxDate(e.ingreso,semIni),semFin)/360;
+  const aportes=apSalud+apPension+apArl+apCaja;
+  return {sal,aux,ibc,dedSalud,dedPension,neto:sal+aux-dedSalud-dedPension,aportes,prov,prima,primaFecha:m<=6?'30 de junio':'20 de diciembre',costo:sal+aux+aportes+prov};
+}
+const tipoTxt={gen:'Empleado',domtc:'Doméstica tiempo completo',domdias:'Doméstica por días'};
+function renderEmp(){
+  const list=$('#empList');
+  if(!empleados.length){list.innerHTML='<div class="empty">Aún no tienes empleados. Agrégalos para ver la nómina de cada mes, el costo total y las próximas primas.</div>';$('#empSummary').innerHTML='';return}
+  let tNom=0,tCost=0,tPrima=0,tAp=0,tProv=0,fecha='';
+  list.innerHTML=empleados.map(e=>{const n=nomina(e);tNom+=n.sal+n.aux;tCost+=n.costo;tPrima+=n.prima;tAp+=n.aportes;tProv+=n.prov;fecha=n.primaFecha;
+    return `<div class="emp"><h3>${esc(e.nombre)}</h3><p>${tipoTxt[e.tipo]} · ${e.tipo==='domdias'?`${e.dias} días al mes`:cop(e.salario)}<br>Desde ${fmtDate(e.ingreso)} · Neto este mes: <b>${cop(n.neto)}</b></p>
+    <div class="acts"><button data-a="nom" data-id="${e.id}">Desprendible PDF</button><button data-a="liq" data-id="${e.id}">Liquidar hoy</button><button class="del" data-a="del" data-id="${e.id}">✕</button></div></div>`}).join('');
+  list.querySelectorAll('button').forEach(b=>b.onclick=()=>{const e=empleados.find(x=>String(x.id)===b.dataset.id);if(!e)return;
+    if(b.dataset.a==='del'){if(b.dataset.ok){empleados=empleados.filter(x=>x!==e);store.set('empleados',empleados);renderEmp()}else{b.dataset.ok=1;b.textContent='¿Borrar?';setTimeout(()=>{if(b.isConnected){b.dataset.ok='';b.textContent='✕'}},2500)}}
+    if(b.dataset.a==='liq'){const dom=e.tipo!=='gen';(dom?liqDom:liqGen).fill(e);showTab(dom?'dom':'liq')}
+    if(b.dataset.a==='nom')pdfNomina(e)});
+  const mes=new Date().toLocaleDateString('es-CO',{month:'long',year:'numeric'});
+  $('#empSummary').innerHTML=`<div class="result"><div class="lbl">Costo total de tu nómina en ${mes}</div><div class="total">${cop(tCost)}</div>
+   <div class="lines">${lines([['Salarios y auxilio',tNom],['Seguridad social del empleador',tAp,'Salud, pensión, ARL (riesgo I) y caja'],['Provisión de prestaciones',tProv,'Prima, cesantías, intereses y vacaciones']])}</div>
+   <div class="line" style="margin-top:6px"><span>Próxima prima (${fecha})</span><b>${cop(tPrima)}</b></div></div>
+   ${empleados.some(e=>e.tipo==='domdias')?'<div class="info">Para empleadas por días, la seguridad social se puede pagar por semanas cotizadas. Los aportes aquí son aproximados.</div>':''}`;
+}
+function pdfNomina(e){
+  if(!window.jspdf){toast('Cargando el generador de PDF, intenta en un momento');return}
+  const n=nomina(e);const mes=new Date().toLocaleDateString('es-CO',{month:'long',year:'numeric'});
+  const doc=pdfBase('Desprendible de nómina');
+  let y=pdfInfo(doc,36,[['Empleado',e.nombre],['Cargo',tipoTxt[e.tipo]],['Periodo',mes],['Fecha de ingreso',fmtDate(e.ingreso)]]);
+  y+=4;doc.setFont('helvetica','bold');doc.setFontSize(11.5);doc.text('Devengado',16,y);y+=6;
+  y=pdfTable(doc,y,[[e.tipo==='domdias'?`Salario (${e.dias} días + descanso dominical)`:'Salario',n.sal],['Auxilio de transporte',n.aux]],'Total devengado',n.sal+n.aux);
+  y+=2;doc.setFont('helvetica','bold');doc.setFontSize(11.5);doc.text('Deducciones',16,y);y+=6;
+  y=pdfTable(doc,y,[['Salud (4%)',n.dedSalud],['Pensión (4%)',n.dedPension]],'Total deducciones',n.dedSalud+n.dedPension);
+  y+=4;doc.setFillColor(230,244,238);doc.rect(16,y-6,184,12,'F');doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(14,124,90);doc.text('NETO A PAGAR',20,y+2);doc.text(cop(n.neto),196,y+2,{align:'right'});doc.setTextColor(15,23,42);
+  pdfSign(doc,y+10,'Firma del empleador','Recibí conforme');
+  savePdf(doc,`Nomina_${e.nombre.trim().replace(/\s+/g,'_')}_${mes.replace(/\s+/g,'_')}.pdf`);
+}
+renderEmp();
+
+// ================= Prima =================
+$('#pSalario').value=SMMLV.toLocaleString('es-CO');
+setSeg($('#pSem'),new Date().getMonth()<6?'1':'2');
+seg($('#pSem'),calcPrima);seg($('#pTodo'),v=>{$('#pIngresoBox').classList.toggle('hidden',v==='si');calcPrima()});
+function calcPrima(){
+  const sal=num($('#pSalario')),vari=num($('#pVar'));
+  const aux=$('#pAux').checked&&sal<=2*SMMLV?AUX:0, base=sal+vari+aux;
+  const y=new Date().getFullYear(),sem=segVal($('#pSem'));
+  const ini=sem==='1'?`${y}-01-01`:`${y}-07-01`,fin=sem==='1'?`${y}-06-30`:`${y}-12-31`;
+  let dias=180;if(segVal($('#pTodo'))==='no'){const ing=$('#pIngreso').value;if(ing&&ing>ini)dias=days360(ing,fin)}
+  if(!sal){$('#pResult').innerHTML='<div class="lbl">Escribe tu salario</div>';return}
+  $('#pResult').innerHTML=`<div class="lbl">Tu prima del ${sem==='1'?'primer':'segundo'} semestre</div><div class="total">${cop(base*dias/360)}</div>
+   <div class="lines">${lines([['Salario + variables',sal+vari],['Auxilio de transporte',aux,aux?'Se incluye en la base':'No aplica'],['Base mensual',base]])}<div class="line"><span>Días del semestre</span><b>${dias} de 180</b></div></div>
+   <div class="line" style="opacity:.65;font-size:12.5px"><span>Fecha límite de pago</span><span>${sem==='1'?'30 de junio':'20 de diciembre'}</span></div>`;
+}
+['pSalario','pVar','pAux','pIngreso'].forEach(id=>{$('#'+id).addEventListener('input',calcPrima);$('#'+id).addEventListener('change',calcPrima)});
+calcPrima();
+
+// ================= Horas extra =================
+$('#hSalario').value=SMMLV.toLocaleString('es-CO');$('#hFecha').value=todayIso;
+const HT=[['ed','Hora extra diurna','6 a. m. – 7 p. m.',d=>1.25,1],['en','Hora extra nocturna','7 p. m. – 6 a. m.',d=>1.75,1],['rn','Recargo nocturno','Hora normal de noche',d=>0.35,0],['dd','Dominical o festivo diurno','Hora normal',d=>d,0],['dn','Dominical o festivo nocturno','Hora normal',d=>d+0.35,0],['edd','Hora extra dominical diurna','',d=>1.25+d,1],['edn','Hora extra dominical nocturna','',d=>1.75+d,1]];
+$('#hRows').innerHTML=HT.map(h=>`<div class="hrow"><div>${h[1]}<small id="hf-${h[0]}"></small></div><input inputmode="decimal" id="h-${h[0]}" placeholder="0"></div>`).join('');
+function calcHoras(){
+  const sal=num($('#hSalario')),f=$('#hFecha').value||todayIso;
+  const hm=f>='2026-07-15'?210:220,jor=f>='2026-07-15'?42:44,dom=f>='2026-07-01'?0.9:0.8;
+  $('#hInfo').innerHTML=`Para esa fecha: jornada de <b>${jor} h</b> semanales (hora ordinaria = salario ÷ ${hm}) y recargo dominical del <b>${Math.round(dom*100)}%</b>.`;
+  if(!sal){$('#hResult').innerHTML='<div class="lbl">Escribe tu salario</div>';return}
+  const hora=sal/hm;let total=0;const rows=[];
+  HT.forEach(h=>{const n=parseFloat(String($('#h-'+h[0]).value).replace(',','.'))||0,fac=h[3](dom);
+    $('#hf-'+h[0]).textContent=(h[2]?h[2]+' · ':'')+(h[4]?'se paga ×':'recargo +')+Math.round(fac*100)+'%';
+    if(n>0){const v=hora*fac*n;total+=v;rows.push([`${h[1]} × ${String(n).replace('.',',')}`,v])}});
+  $('#hResult').innerHTML=`<div class="lbl">Valor de tu hora ordinaria: ${cop(hora)}</div><div class="total">${cop(total)}</div><div class="lines">${rows.length?lines(rows):'<div class="line"><span>Escribe cuántas horas de cada tipo trabajaste</span></div>'}</div>`;
+}
+['hSalario','hFecha',...HT.map(h=>'h-'+h[0])].forEach(id=>{$('#'+id).addEventListener('input',calcHoras);$('#'+id).addEventListener('change',calcHoras)});
+calcHoras();
+
+// ================= Guilloché (como el fondo de los billetes) =================
+(function(){
+  let paths='';
+  const ring=(R,r,d,turns,col,w)=>{let p='';const steps=1400;for(let i=0;i<=steps;i++){const t=i/steps*Math.PI*2*turns;const x=170+(R-r)*Math.cos(t)+d*Math.cos((R-r)/r*t);const y=170+(R-r)*Math.sin(t)-d*Math.sin((R-r)/r*t);p+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)}return `<path d="${p}" fill="none" stroke="${col}" stroke-width="${w}"/>`};
+  paths+=ring(150,42,70,21,'#3E6B60',.6);paths+=ring(118,33,52,33,'#B88A2E',.45);paths+=ring(86,26,38,13,'#3E6B60',.5);
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 340">${paths}</svg>`;
+  document.documentElement.style.setProperty('--guilloche',`url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
+})();
+// ================= El total se cuenta al cambiar =================
+const reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('.result').forEach(box=>{
+  let prev=0;
+  new MutationObserver(()=>{const el=box.querySelector('.total');if(!el)return;const target=Number(el.textContent.replace(/[^\d]/g,''))||0;
+    if(reduceMotion||!prev||prev===target){prev=target;return}
+    const from=prev,t0=performance.now();prev=target;
+    const step=t=>{const k=Math.min(1,(t-t0)/380),e=1-Math.pow(1-k,3);el.textContent=cop(from+(target-from)*e);if(k<1&&el.isConnected)requestAnimationFrame(step)};requestAnimationFrame(step);
+  }).observe(box,{childList:true});
+});
+$('#btnValores').onclick=()=>showTab('valores');
+// ================= Pestañas =================
+function showTab(v){document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.v===v));document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));window.scrollTo(0,0)}
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>showTab(t.dataset.v));
+moneyInputs();
+</script>
+</body>
+</html>
