@@ -1,0 +1,18 @@
+{
+  "actualizado": "2026-11-17",
+  "fuente": "Decreto 1469 y 1470 de 2025 (vigentes por Decreto 0159 de 2026); Ley 2101 de 2021; Ley 2466 de 2025",
+  "anios": {
+    "2025": { "smmlv": 1423500, "aux": 200000 },
+    "2026": { "smmlv": 1750905, "aux": 249095 }
+  },
+  "recargoDominical": [
+    { "desde": "2025-07-01", "valor": 0.80 },
+    { "desde": "2026-07-01", "valor": 0.90 },
+    { "desde": "2027-07-01", "valor": 1.00 }
+  ],
+  "jornada": [
+    { "desde": "2025-07-15", "horas": 44 },
+    { "desde": "2026-07-15", "horas": 42 }
+  ],
+  "aviso": ""
+}

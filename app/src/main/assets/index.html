@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Liquida · Calculadora laboral Colombia 2026</title>
+<title>Liquida · Calculadora laboral Colombia</title>
 <style>@font-face{font-family:'Newsreader';font-weight:400;font-style:normal;src:url(fonts/newsreader-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Newsreader';font-weight:500;font-style:normal;src:url(fonts/newsreader-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Newsreader';font-weight:600;font-style:normal;src:url(fonts/newsreader-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Public Sans';font-weight:400;font-style:normal;src:url(fonts/public-sans-latin-400-normal.woff2) format('woff2')}@font-face{font-family:'Public Sans';font-weight:500;font-style:normal;src:url(fonts/public-sans-latin-500-normal.woff2) format('woff2')}@font-face{font-family:'Public Sans';font-weight:600;font-style:normal;src:url(fonts/public-sans-latin-600-normal.woff2) format('woff2')}@font-face{font-family:'Public Sans';font-weight:700;font-style:normal;src:url(fonts/public-sans-latin-700-normal.woff2) format('woff2')}</style>
 <script src="jspdf.umd.min.js"></script>
 <style>
@@ -153,7 +153,7 @@ details.more[open] summary{margin-bottom:12px}
   <header>
     <div class="seal"><span>L</span></div>
     <div><h1>Liquida</h1><p>Tus cuentas laborales, claras</p></div>
-    <button class="hbtn" id="btnValores">Valores 2026</button>
+    <button class="hbtn" id="btnValores">Valores <span class="vAnio"></span></button>
   </header>
   <nav class="tabs"><div class="wrap">
     <button class="tab on" data-v="liq"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Liquidar</button>
@@ -226,20 +226,20 @@ details.more[open] summary{margin-bottom:12px}
   </section>
 
   <section class="view" id="v-valores">
-    <h2 class="vtitle">Valores 2026</h2><p class="vsub">Las cifras con las que calcula la app.</p>
+    <h2 class="vtitle">Valores <span class="vAnio"></span></h2><p class="vsub" id="vActualizado">Las cifras con las que calcula la app.</p><div id="vAviso"></div>
     <div class="card">
       <h2>Salario y jornada</h2>
-      <div class="kv"><span>Salario mínimo</span><b>$1.750.905</b></div>
-      <div class="kv"><span>Auxilio de transporte</span><b>$249.095</b></div>
-      <div class="kv"><span>Mínimo + auxilio</span><b>$2.000.000</b></div>
-      <div class="kv"><span>Día de salario mínimo</span><b>$58.364</b></div>
-      <div class="kv"><span>Auxilio de transporte por día</span><b>$8.303</b></div>
+      <div class="kv"><span>Salario mínimo</span><b class="vMin"></b></div>
+      <div class="kv"><span>Auxilio de transporte</span><b class="vAux"></b></div>
+      <div class="kv"><span>Mínimo + auxilio</span><b class="vTot"></b></div>
+      <div class="kv"><span>Día de salario mínimo</span><b class="vDia"></b></div>
+      <div class="kv"><span>Auxilio de transporte por día</span><b class="vAuxDia"></b></div>
       <div class="kv"><span>Tope para recibir auxilio</span><b>Hasta 2 mínimos</b></div>
-      <div class="kv"><span>Jornada máxima</span><b>44 h · 42 h desde 15 jul 2026</b></div>
+      <div class="kv"><span>Jornada máxima</span><b class="vJor"></b></div>
       <div class="kv"><span>Jornada nocturna</span><b>7:00 p. m. a 6:00 a. m.</b></div>
       <div class="kv"><span>Recargo nocturno</span><b>35%</b></div>
       <div class="kv"><span>Hora extra diurna / nocturna</span><b>25% / 75%</b></div>
-      <div class="kv"><span>Dominical y festivo</span><b>80% · 90% desde 1 jul 2026</b></div>
+      <div class="kv"><span>Dominical y festivo</span><b class="vDom"></b></div>
     </div>
     <div class="card">
       <h2>Fechas de pago</h2>
@@ -250,13 +250,24 @@ details.more[open] summary{margin-bottom:12px}
     </div>
   </section>
 
-  <div class="foot">Liquida 0.1 · Cálculo orientativo con la ley vigente en 2026 (Código Sustantivo del Trabajo, Leyes 2101 de 2021 y 2466 de 2025).<br>No reemplaza la asesoría de un abogado o contador.</div>
+  <div class="foot">Liquida 0.2 · Cálculo orientativo con la ley vigente en <span class="vAnio"></span> (Código Sustantivo del Trabajo, Leyes 2101 de 2021 y 2466 de 2025).<br>No reemplaza la asesoría de un abogado o contador.</div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
 // ================= Constantes y utilidades =================
-const SMMLV=1750905, AUX=249095, DIA_MIN=Math.round(SMMLV/30);
+// ===== Valores legales: vienen incluidos y se actualizan solos desde internet =====
+const VALORES_URL='https://raw.githubusercontent.com/hossa2016/liquida-app/main/valores.json';
+const VALORES_BASE={actualizado:'2026-11-17',anios:{'2025':{smmlv:1423500,aux:200000},'2026':{smmlv:1750905,aux:249095}},
+  recargoDominical:[{desde:'2025-07-01',valor:0.8},{desde:'2026-07-01',valor:0.9},{desde:'2027-07-01',valor:1}],
+  jornada:[{desde:'2025-07-15',horas:44},{desde:'2026-07-15',horas:42}],aviso:''};
+let VAL=(()=>{try{const c=JSON.parse(localStorage.getItem('liquida:valores')||'null');if(c&&c.anios&&c.actualizado>=VALORES_BASE.actualizado)return c}catch(e){}return VALORES_BASE})();
+function valAnio(y){const ys=Object.keys(VAL.anios).map(Number).sort((a,b)=>a-b);let best=ys[0];for(const k of ys)if(k<=y)best=k;return Object.assign({anio:best},VAL.anios[String(best)])}
+function vigente(list,fecha,campo){let v=list[0][campo];for(const it of list)if(fecha>=it.desde)v=it[campo];return v}
+function proximo(list,fecha){return list.find(it=>it.desde>fecha)}
+let SMMLV,AUX,DIA_MIN,ANIO;
+function aplicarValores(){const v=valAnio(new Date().getFullYear());SMMLV=v.smmlv;AUX=v.aux;DIA_MIN=Math.round(SMMLV/30);ANIO=v.anio}
+aplicarValores();
 const $=s=>document.querySelector(s);
 const cop=n=>new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(Math.round(n||0));
 const num=el=>Number(String(el.value).replace(/[^\d]/g,''))||0;
@@ -295,14 +306,14 @@ function liquidar(p){
   rows.push(['Vacaciones no disfrutadas',vac,`${dec(diasVac)} días`]);
   if(p.motivo==='sinjusta'){
     const diario=p.salario/30;
-    if(p.tipo==='indef'){const anios=total/360,alto=p.salario>=10*SMMLV;const dias=(alto?20:30)+Math.max(0,anios-1)*(alto?15:20);rows.push(['Indemnización por despido',diario*dias,`${dec(dias)} días de salario`])}
+    if(p.tipo==='indef'){const anios=total/360,alto=p.salario>=10*valAnio(finP.y).smmlv;const dias=(alto?20:30)+Math.max(0,anios-1)*(alto?15:20);rows.push(['Indemnización por despido',diario*dias,`${dec(dias)} días de salario`])}
     else if(!p.pactado||p.pactado<=p.fin)notes.push(`<div class="note">Escribe la fecha ${p.tipo==='fijo'?'pactada de terminación':'estimada de fin de la obra'} para calcular la indemnización.</div>`);
     else{const dias=Math.max(15,days360(addDay(p.fin,1),p.pactado));rows.push(['Indemnización por despido',diario*dias,`${dias} días que faltaban del contrato`])}
   }
   if(p.motivo==='fin'&&p.tipo==='indef')notes.push('<div class="note">Un contrato indefinido no tiene plazo. Si el empleador lo terminó sin una causa legal, elige "Despido sin justa causa".</div>');
   if(p.motivo==='mutuo')notes.push('<div class="info">En mutuo acuerdo la indemnización depende de lo pactado por escrito. Aquí no se incluye.</div>');
   if(p.salario>=13*SMMLV)notes.push('<div class="note">Con salario integral (13 mínimos o más), la prima y las cesantías ya están incluidas en el salario.</div>');
-  if(finP.y<2026)notes.push('<div class="note">La fecha de salida es anterior a 2026: se usan los valores de 2026 y el resultado puede no coincidir.</div>');
+  if(!VAL.anios[String(finP.y)])notes.push(`<div class="note">Aún no hay valores oficiales de ${finP.y}: se usan los de ${valAnio(finP.y).anio}.</div>`);
   if(dCes<total)notes.push(`<div class="info">Las cesantías de años anteriores a ${finP.y} ya debieron consignarse al fondo. Aquí van solo las de ${finP.y}.</div>`);
   return {rows,total:rows.reduce((a,r)=>a+r[1],0),days:total,notes};
 }
@@ -321,7 +332,7 @@ function liqForm(px,domestic){
         <div class="field"><label>Días al mes</label><input inputmode="numeric" id="${px}Dias" value="8"></div>
         <div class="field"><label>Pago por día</label><input inputmode="numeric" class="money" id="${px}ValorDia"></div>
       </div>
-      <div class="field"><small>Pago del día sin auxilio (mínimo $58.364 en 2026). Se suma el descanso dominical proporcional y el auxilio de transporte por día ($8.303).</small></div>
+      <div class="field"><small>Pago del día sin auxilio (mínimo <span class="vDia"></span>). Se suma el descanso dominical proporcional y el auxilio de transporte por día (<span class="vAuxDia"></span>).</small></div>
     </div>
   </div>`:''}
   <div class="card">
@@ -367,17 +378,18 @@ function setupLiq(px,domestic){
   seg(g('Tipo'),v=>{g('PactadoBox').classList.toggle('hidden',v==='indef');g('PactadoLbl').textContent=v==='fijo'?'Fecha de terminación pactada':'Fecha estimada de fin de la obra';calc()});
   function params(){
     let salario,aux,desc;
+    const fy=(g('Fin').value||todayIso).slice(0,4), V=valAnio(Number(fy)), MIN=V.smmlv, AX=V.aux, DMIN=Math.round(MIN/30);
     if(porDias()){
       const dias=Math.min(30,num(g('Dias'))),vd=num(g('ValorDia'));
-      salario=vd*dias*7/6;aux=AUX/30*dias;desc=`${dias} días al mes · ${cop(vd)} por día`;
-      if(vd&&vd<DIA_MIN)warn='<div class="note">El pago por día es menor al mínimo de 2026 ($58.364).</div>';
+      salario=vd*dias*7/6;aux=AX/30*dias;desc=`${dias} días al mes · ${cop(vd)} por día`;
+      if(vd&&vd<DMIN)warn=`<div class="note">El pago por día es menor al mínimo de ${V.anio} (${cop(DMIN)}).</div>`;
     }else{
       const s=num(g('Salario')),v=domestic?0:num(g('Var'));
       salario=s+v;
       const auxOk=domestic?!g('Interna').checked:g('Aux').checked;
-      aux=auxOk&&s<=2*SMMLV?AUX:0;desc=`Salario ${cop(s)}${v?` + variables ${cop(v)}`:''}`;
-      if(!domestic)g('SalHint').textContent=s>2*SMMLV?'Gana más de 2 mínimos: no recibe auxilio de transporte.':(s&&s<SMMLV?'Ojo: es menos que el salario mínimo 2026.':'');
-      if(domestic&&s&&s<SMMLV)warn='<div class="note">Para tiempo completo el salario no puede ser menor al mínimo de 2026 ($1.750.905).</div>';
+      aux=auxOk&&s<=2*MIN?AX:0;desc=`Salario ${cop(s)}${v?` + variables ${cop(v)}`:''}`;
+      if(!domestic)g('SalHint').textContent=s>2*MIN?'Gana más de 2 mínimos: no recibe auxilio de transporte.':(s&&s<MIN?`Ojo: es menos que el salario mínimo ${V.anio}.`:'');
+      if(domestic&&s&&s<MIN)warn=`<div class="note">Para tiempo completo el salario no puede ser menor al mínimo de ${V.anio} (${cop(MIN)}).</div>`;
     }
     return {ini:g('Inicio').value,fin:g('Fin').value,salario,aux,desc,tipo:segVal(g('Tipo')),motivo:g('Motivo').value,pactado:g('Pactado').value,vacTom:num(g('VacTom')),pend:num(g('Pend'))};
   }
@@ -393,7 +405,7 @@ function setupLiq(px,domestic){
       <div class="line meta"><span>Tiempo trabajado</span><span>${r.days} días · ${dec(r.days/360)} años</span></div>
       <div class="btns"><button class="main" data-a="pdf">Descargar PDF</button><button data-a="copy">Copiar</button></div>`;
     g('Result').querySelector('[data-a=pdf]').onclick=()=>pdfLiquidacion(last,{nomT:g('NomT').value,cedT:g('CedT').value,nomE:g('NomE').value,domestic});
-    g('Result').querySelector('[data-a=copy]').onclick=()=>{const t=`Liquidación laboral (Liquida)\n${fmtDate(p.ini)} – ${fmtDate(p.fin)}\n${p.desc}\n`+r.rows.map(x=>`${x[0]}: ${cop(x[1])}`).join('\n')+`\nTOTAL: ${cop(r.total)}\n*Cálculo orientativo, ley 2026.`;copyText(t)};
+    g('Result').querySelector('[data-a=copy]').onclick=()=>{const t=`Liquidación laboral (Liquida)\n${fmtDate(p.ini)} – ${fmtDate(p.fin)}\n${p.desc}\n`+r.rows.map(x=>`${x[0]}: ${cop(x[1])}`).join('\n')+`\nTOTAL: ${cop(r.total)}\n*Cálculo orientativo, ley ${ANIO}.`;copyText(t)};
   }
   $('#v-'+(domestic?'dom':'liq')).querySelectorAll('input,select').forEach(el=>{el.addEventListener('input',calc);el.addEventListener('change',calc)});
   calc();
@@ -442,7 +454,7 @@ function pdfSign(doc,y,a,b){
   y=Math.max(y+24,215);doc.setDrawColor(15,23,42);doc.line(16,y,96,y);doc.line(120,y,200,y);
   doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(15,23,42);doc.text(a,16,y+5);doc.text(b,120,y+5);
   doc.setFontSize(8);doc.setTextColor(100,116,139);
-  doc.text('Cálculo orientativo con la ley vigente en 2026 (CST, Leyes 2101 de 2021 y 2466 de 2025). No reemplaza asesoría legal o contable.',16,262,{maxWidth:184});
+  doc.text('Cálculo orientativo con la ley vigente en '+ANIO+' (CST, Leyes 2101 de 2021 y 2466 de 2025). No reemplaza asesoría legal o contable.',16,262,{maxWidth:184});
 }
 function pdfLiquidacion(last,meta){
   if(!last){toast('Completa los datos primero');return}
@@ -546,7 +558,7 @@ const HT=[['ed','Hora extra diurna','6 a. m. – 7 p. m.',d=>1.25,1],['en','Hora
 $('#hRows').innerHTML=HT.map(h=>`<div class="hrow"><div>${h[1]}<small id="hf-${h[0]}"></small></div><input inputmode="decimal" id="h-${h[0]}" placeholder="0"></div>`).join('');
 function calcHoras(){
   const sal=num($('#hSalario')),f=$('#hFecha').value||todayIso;
-  const hm=f>='2026-07-15'?210:220,jor=f>='2026-07-15'?42:44,dom=f>='2026-07-01'?0.9:0.8;
+  const jor=vigente(VAL.jornada,f,'horas'),hm=jor*5,dom=vigente(VAL.recargoDominical,f,'valor');
   $('#hInfo').innerHTML=`Para esa fecha: jornada de <b>${jor} h</b> semanales (hora ordinaria = salario ÷ ${hm}) y recargo dominical del <b>${Math.round(dom*100)}%</b>.`;
   if(!sal){$('#hResult').innerHTML='<div class="lbl">Escribe tu salario</div>';return}
   const hora=sal/hm;let total=0;const rows=[];
@@ -577,6 +589,33 @@ document.querySelectorAll('.result').forEach(box=>{
   }).observe(box,{childList:true});
 });
 $('#btnValores').onclick=()=>showTab('valores');
+// ================= Pintar valores y buscar actualización =================
+function fechaCorta(iso){return fmtDate(iso)}
+function pintarValores(){
+  const set=(cls,txt)=>document.querySelectorAll('.'+cls).forEach(e=>e.textContent=txt);
+  set('vAnio',ANIO);set('vMin',cop(SMMLV));set('vAux',cop(AUX));set('vTot',cop(SMMLV+AUX));set('vDia',cop(DIA_MIN));set('vAuxDia',cop(AUX/30));
+  const hoy=todayIso, j=vigente(VAL.jornada,hoy,'horas'), pj=proximo(VAL.jornada,hoy), d=vigente(VAL.recargoDominical,hoy,'valor'), pd=proximo(VAL.recargoDominical,hoy);
+  set('vJor',`${j} h por semana`+(pj?` · ${pj.horas} h desde ${fechaCorta(pj.desde)}`:''));
+  set('vDom',`${Math.round(d*100)}%`+(pd?` · ${Math.round(pd.valor*100)}% desde ${fechaCorta(pd.desde)}`:''));
+  const act=$('#vActualizado');if(act)act.textContent=`Valores actualizados el ${fechaCorta(VAL.actualizado)}.`;
+  const av=$('#vAviso');if(av)av.innerHTML=VAL.aviso?`<div class="info">${esc(VAL.aviso)}</div>`:'';
+}
+pintarValores();
+(async()=>{
+  try{
+    const ctrl=new AbortController();setTimeout(()=>ctrl.abort(),6000);
+    const r=await fetch(VALORES_URL+'?t='+Date.now(),{signal:ctrl.signal,cache:'no-store'});
+    if(!r.ok)return;
+    const nuevo=await r.json();
+    if(!nuevo||!nuevo.anios||!nuevo.actualizado)return;
+    try{localStorage.setItem('liquida:valores',JSON.stringify(nuevo))}catch(e){}
+    if(nuevo.actualizado!==VAL.actualizado||JSON.stringify(nuevo.anios)!==JSON.stringify(VAL.anios)){
+      const antes=SMMLV;VAL=nuevo;aplicarValores();pintarValores();
+      document.querySelectorAll('input,select').forEach(el=>el.dispatchEvent(new Event('change')));
+      if(SMMLV!==antes)toast(`Valores actualizados: salario mínimo ${ANIO} ${cop(SMMLV)}`);
+    }
+  }catch(e){/* sin internet: se usan los valores guardados */}
+})();
 // ================= Pestañas =================
 function showTab(v){document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.v===v));document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));window.scrollTo(0,0)}
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>showTab(t.dataset.v));
